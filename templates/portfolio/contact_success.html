@@ -1,0 +1,22 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<h1 class="display-4">Contact Me</h1>
+
+<div class="d-flex justify-content-center">
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <input placeholder="Name" type="text" name="name" maxlength="100" required id="id_name">
+        </p>
+        <p>
+            <input placeholder="E-mail" type="email" name="email" maxlength="254" required id="id_email">
+        </p>
+        <p>
+            <textarea placeholder="Message" name="message" cols="40" rows="10" required id="id_message"></textarea>
+        </p>
+        <button type="submit" style="background-color:#007bff;" class="btn rounded">Send</button>
+    </form>
+</div>
+
+{% endblock %}

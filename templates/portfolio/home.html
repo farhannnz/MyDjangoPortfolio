@@ -1,0 +1,33 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron text-center text-white" data-aos="fade-up" style="background-image: url('{% static 'portfolio/images/bg-tech.jpg' %}'); background-size: cover;">
+    <h1 class="display-6">Its Me Farhan Khan!
+    <br>
+     I am a <span id="element">W</span>
+    </h1>
+    <p class='m-3'>I am farhan khan I am student of BCA. Here are some of my skills. You can view my projects and more  in Navbar.</p>
+</div>
+<div class="container">
+    <div class="row d-flex justify-content-around flex-wrap">
+        {% for skill in skills %}
+        
+                   <div style="width:300px; border:2px solid #007bff; border-radius:5px; text-align:center; margin-top:5px;">
+                        <h5 class="card-title">{{ skill.name }}</h5>
+                   </div>
+                   
+        {% endfor %}
+    
+</div>
+<!-- Load library from the CDN -->
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+  <!-- Setup and start animation! -->
+  <script>
+    var typed = new Typed('#element', {
+      strings: ['BCA Student', 'Web Developer'],
+      typeSpeed: 100,
+    });
+  </script>
+{% endblock %}
