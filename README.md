@@ -73,36 +73,12 @@ For deploying the website to a production server, follow these steps:
     python manage.py createsuperuser
     ```
 
-## Contributing
-
-If you'd like to contribute to this project, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch:
-    ```bash
-    git checkout -b feature/YourFeature
-    ```
-3. Make your changes and commit them:
-    ```bash
-    git commit -m 'Add some feature'
-    ```
-4. Push to the branch:
-    ```bash
-    git push origin feature/YourFeature
-    ```
-5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Contact
 
 Feel free to reach out if you have any questions or suggestions!
 
-- **Email**: your.email@example.com
-- **LinkedIn**: [Your LinkedIn Profile](https://www.linkedin.com/in/yourprofile/)
-- **Twitter**: [@yourhandle](https://twitter.com/yourhandle)
+- **Email**: krahit57@gmail.com
+
 
 ---
 
