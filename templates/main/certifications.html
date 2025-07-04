@@ -1,0 +1,530 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<!-- Certifications Hero Section -->
+<section class="hero-section text-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold text-gradient" data-aos="fade-down">Certifications</h1>
+    <p class="text-light mt-3" data-aos="fade-up">Professional certifications and achievements</p>
+    <div class="cert-stats mt-4" data-aos="zoom-in">
+      <div class="row">
+        <div class="col-md-4">
+          <h3 class="text-neon">{{ certifications.count }}+</h3>
+          <p class="text-light">Certifications</p>
+        </div>
+        <div class="col-md-4">
+          <h3 class="text-neon">5+</h3>
+          <p class="text-light">Platforms</p>
+        </div>
+        <div class="col-md-4">
+          <h3 class="text-neon">100+</h3>
+          <p class="text-light">Hours Learning</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Certifications Filter -->
+<section class="py-3 bg-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <div class="filter-buttons" data-aos="fade-up">
+          <button class="btn btn-outline-info btn-sm mx-1 mb-2 cert-filter-btn active" data-filter="all">
+            <i class="fas fa-th"></i> All Certifications
+          </button>
+          <button class="btn btn-outline-info btn-sm mx-1 mb-2 cert-filter-btn" data-filter="programming">
+            <i class="fas fa-code"></i> Programming
+          </button>
+          <button class="btn btn-outline-info btn-sm mx-1 mb-2 cert-filter-btn" data-filter="cloud">
+            <i class="fas fa-cloud"></i> Cloud
+          </button>
+          <button class="btn btn-outline-info btn-sm mx-1 mb-2 cert-filter-btn" data-filter="database">
+            <i class="fas fa-database"></i> Database
+          </button>
+          <button class="btn btn-outline-info btn-sm mx-1 mb-2 cert-filter-btn" data-filter="design">
+            <i class="fas fa-palette"></i> Design
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Certifications Grid -->
+<section class="py-5">
+  <div class="container">
+    <div class="row" id="certifications-grid">
+      {% for cert in certifications %}
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-4 cert-item" data-category="programming" data-aos="fade-up">
+        <div class="cert-card-detailed h-100">
+          <div class="cert-image-container">
+            {% if cert.certificate_image %}
+              <img src="{{ cert.certificate_image.url }}" alt="{{ cert.title }}" class="cert-image-large">
+              <div class="cert-overlay">
+                <div class="cert-overlay-content">
+                  <h5 class="text-white mb-2">{{ cert.title }}</h5>
+                  <p class="text-light">{{ cert.issued_by }}</p>
+                  {% if cert.certificate_link %}
+                    <a href="{{ cert.certificate_link }}" target="_blank" class="btn btn-outline-light btn-sm">
+                      <i class="fas fa-external-link-alt"></i> View Certificate
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            {% else %}
+              <div class="cert-placeholder-large">
+                <i class="fas fa-certificate fa-4x text-neon"></i>
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="cert-info p-4">
+            <div class="cert-badge mb-2">
+              <span class="badge bg-info">{{ cert.issued_by }}</span>
+            </div>
+            <h5 class="cert-title-large text-neon mb-2">{{ cert.title }}</h5>
+            <p class="cert-date-large text-light mb-2">
+              <i class="fas fa-calendar"></i> {{ cert.date|date:"F Y" }}
+            </p>
+            <p class="cert-description text-light mb-3">
+              Professional certification demonstrating expertise in {{ cert.title|lower }}.
+            </p>
+            
+            <!-- Skills Tags -->
+            <div class="cert-skills mb-3">
+              <span class="skill-tag">Django</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">Web Dev</span>
+            </div>
+            
+            <div class="cert-actions">
+              {% if cert.certificate_link %}
+                <a href="{{ cert.certificate_link }}" target="_blank" class="btn btn-primary btn-sm">
+                  <i class="fas fa-external-link-alt"></i> View Certificate
+                </a>
+              {% endif %}
+              <button class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#certModal{{ cert.id }}">
+                <i class="fas fa-info-circle"></i> Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Certificate Modal -->
+      <div class="modal fade" id="certModal{{ cert.id }}" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content bg-dark">
+            <div class="modal-header">
+              <h5 class="modal-title text-neon">{{ cert.title }}</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6">
+                  {% if cert.certificate_image %}
+                    <img src="{{ cert.certificate_image.url }}" alt="{{ cert.title }}" class="img-fluid rounded">
+                  {% else %}
+                    <div class="cert-placeholder-modal">
+                      <i class="fas fa-certificate fa-4x text-neon"></i>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <h6 class="text-neon">Issued By:</h6>
+                  <p class="text-light">{{ cert.issued_by }}</p>
+                  
+                  <h6 class="text-neon">Date:</h6>
+                  <p class="text-light">{{ cert.date|date:"F d, Y" }}</p>
+                  
+                  <h6 class="text-neon">Description:</h6>
+                  <p class="text-light">This certification validates knowledge and skills in {{ cert.title|lower }}, demonstrating proficiency in related technologies and best practices.</p>
+                  
+                  {% if cert.certificate_link %}
+                    <a href="{{ cert.certificate_link }}" target="_blank" class="btn btn-primary">
+                      <i class="fas fa-external-link-alt"></i> View Original Certificate
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center" data-aos="fade-up">
+        <div class="empty-state py-5">
+          <i class="fas fa-certificate fa-4x text-neon mb-3"></i>
+          <h3 class="text-neon">No Certifications Yet</h3>
+          <p class="text-light">Check back soon for new certifications!</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Learning Path Section -->
+<section class="py-5 bg-dark">
+  <div class="container">
+    <h2 class="text-center text-neon mb-5" data-aos="fade-up">Learning Path</h2>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="timeline-wrapper">
+          <div class="timeline-item" data-aos="fade-right">
+            <div class="timeline-marker">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="timeline-content">
+              <h5 class="text-neon">Foundation</h5>
+              <p class="text-light">Started with programming fundamentals and core technologies</p>
+              <div class="timeline-skills">
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">Python</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timeline-item" data-aos="fade-left">
+            <div class="timeline-marker">
+              <i class="fas fa-code"></i>
+            </div>
+            <div class="timeline-content">
+              <h5 class="text-neon">Web Development</h5>
+              <p class="text-light">Advanced into full-stack web development frameworks</p>
+              <div class="timeline-skills">
+                <span class="skill-tag">Django</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">REST APIs</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timeline-item" data-aos="fade-right">
+            <div class="timeline-marker">
+              <i class="fas fa-cloud"></i>
+            </div>
+            <div class="timeline-content">
+              <h5 class="text-neon">Cloud & DevOps</h5>
+              <p class="text-light">Exploring cloud platforms and deployment strategies</p>
+              <div class="timeline-skills">
+                <span class="skill-tag">AWS</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">CI/CD</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timeline-item" data-aos="fade-left">
+            <div class="timeline-marker">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="timeline-content">
+              <h5 class="text-neon">Data & Analytics</h5>
+              <p class="text-light">Currently focusing on data science and machine learning</p>
+              <div class="timeline-skills">
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">MongoDB</span>
+                <span class="skill-tag">Data Analysis</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-neon mb-4" data-aos="fade-up">Ready to Collaborate?</h2>
+        <p class="text-light mb-4" data-aos="fade-up" data-aos-delay="200">
+          With these certifications and continuous learning, I'm prepared to take on new challenges and deliver quality solutions.
+        </p>
+        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
+          <a href="{% url 'contact' %}" class="btn btn-primary btn-lg me-3">
+            <i class="fas fa-envelope"></i> Get In Touch
+          </a>
+          <a href="{% url 'projects' %}" class="btn btn-outline-info btn-lg">
+            <i class="fas fa-folder-open"></i> View Projects
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Certificate Filter Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.cert-filter-btn');
+    const certItems = document.querySelectorAll('.cert-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter certificates
+            certItems.forEach(item => {
+                if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                    item.style.display = 'block';
+                    item.classList.add('fade-in');
+                } else {
+                    item.style.display = 'none';
+                    item.classList.remove('fade-in');
+                }
+            });
+        });
+    });
+    
+    // Add smooth scroll for timeline
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    });
+    
+    timelineItems.forEach(item => {
+        observer.observe(item);
+    });
+});
+</script>
+
+<style>
+/* Custom Styles for Certifications Page */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.text-gradient {
+    background: linear-gradient(45deg, #00d4ff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-neon {
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.cert-card-detailed {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.cert-card-detailed:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+}
+
+.cert-image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px 15px 0 0;
+}
+
+.cert-image-large {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.cert-image-large:hover {
+    transform: scale(1.05);
+}
+
+.cert-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cert-image-container:hover .cert-overlay {
+    opacity: 1;
+}
+
+.cert-placeholder-large {
+    height: 200px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px 15px 0 0;
+}
+
+.cert-placeholder-modal {
+    height: 300px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.skill-tag {
+    display: inline-block;
+    background: rgba(0, 212, 255, 0.2);
+    color: #00d4ff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-right: 8px;
+    margin-bottom: 4px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.timeline-wrapper {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline-wrapper::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #00d4ff, #ff00ff);
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 50px;
+    width: 50%;
+    padding: 0 40px;
+}
+
+.timeline-item:nth-child(odd) {
+    left: 0;
+}
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+}
+
+.timeline-marker {
+    position: absolute;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #00d4ff, #ff00ff);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.timeline-item:nth-child(odd) .timeline-marker {
+    right: -25px;
+}
+
+.timeline-item:nth-child(even) .timeline-marker {
+    left: -25px;
+}
+
+.timeline-content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.timeline-skills {
+    margin-top: 15px;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+    animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 768px) {
+    .timeline-wrapper::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        width: 100%;
+        left: 0 !important;
+        padding-left: 80px;
+    }
+    
+    .timeline-marker {
+        left: 5px !important;
+    }
+    
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .cert-stats .col-md-4 {
+        margin-bottom: 20px;
+    }
+}
+</style>
+{% endblock %}

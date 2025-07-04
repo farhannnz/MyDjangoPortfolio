@@ -1,0 +1,131 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<!-- Projects Header Section -->
+<section class="hero-section text-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold text-gradient" data-aos="fade-down">My Projects</h1>
+    <p class="text-light mt-3" data-aos="fade-up">Explore my latest work and creative solutions</p>
+    <div class="row mt-4">
+      <div class="col-lg-8 mx-auto">
+        <div class="project-stats d-flex justify-content-around" data-aos="zoom-in">
+          <div class="stat-item">
+            <h3 class="text-neon">{{ projects.count }}+</h3>
+            <p class="text-light">Projects</p>
+          </div>
+          <div class="stat-item">
+            <h3 class="text-neon">15+</h3>
+            <p class="text-light">Technologies</p>
+          </div>
+          <div class="stat-item">
+            <h3 class="text-neon">100+</h3>
+            <p class="text-light">Hours Coded</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Projects Grid -->
+<section class="py-5">
+  <div class="container">
+    <div class="row" id="projects-grid">
+      {% for project in projects %}
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-4 project-item" data-category="web" data-aos="fade-up">
+        <div class="project-card h-100">
+          <div class="project-image-container">
+            {% if project.images.first %}
+              <img src="{{ project.images.first.image.url }}" alt="{{ project.title }}" class="img-fluid rounded project-image">
+              <div class="project-overlay">
+                <div class="project-overlay-content">
+                  <h5 class="text-white mb-2">{{ project.title }}</h5>
+                  <p class="text-light mb-3">{{ project.description|slice:":80" }}...</p>
+                  <div class="project-links">
+                    {% if project.github_link %}
+                      <a href="{{ project.github_link }}" target="_blank" class="btn btn-outline-light btn-sm me-2">
+                        <i class="fab fa-github"></i> Code
+                      </a>
+                    {% endif %}
+                    {% if project.visit_link %}
+                      <a href="{{ project.visit_link }}" target="_blank" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-external-link-alt"></i> Live
+                      </a>
+                    {% endif %}
+                    <a href="{% url 'project_detail' project.pk %}" class="btn btn-primary btn-sm">
+                <i class="fas fa-info-circle"></i> Details
+              </a>
+                  </div>
+                </div>
+              </div>
+            {% else %}
+              <div class="project-placeholder">
+                <i class="fas fa-code fa-3x text-neon"></i>
+              </div>
+            {% endif %}
+          </div>
+          
+
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center" data-aos="fade-up">
+        <div class="empty-state py-5">
+          <i class="fas fa-folder-open fa-4x text-neon mb-3"></i>
+          <h3 class="text-neon">No Projects Yet</h3>
+          <p class="text-light">Check back soon for exciting projects!</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-gradient-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-lg-8 mx-auto" data-aos="fade-up">
+        <h2 class="text-gradient mb-4">Have a Project in Mind?</h2>
+        <p class="text-light mb-4">Let's collaborate and bring your ideas to life with innovative solutions.</p>
+        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg me-3">
+          <i class="fas fa-envelope"></i> Start a Project
+        </a>
+        <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg">
+          <i class="fas fa-user"></i> Learn More About Me
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Additional Script for Filtering -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectItems = document.querySelectorAll('.project-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const filterValue = this.getAttribute('data-filter');
+            
+            projectItems.forEach(item => {
+                if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                    item.style.display = 'block';
+                    item.classList.add('fade-in');
+                } else {
+                    item.style.display = 'none';
+                    item.classList.remove('fade-in');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

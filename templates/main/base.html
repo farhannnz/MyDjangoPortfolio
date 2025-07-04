@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Portfolio</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+    }
+
+    .navbar-brand {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+    }
+
+    .nav-link {
+  position: relative;
+  color: #ddd !important;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background-color: #00ffe1;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover {
+  color: #00ffe1 !important;
+}
+
+
+    /* Hero Section */
+    .hero-section {
+      background: radial-gradient(circle at top, #0a0a0a, #121212);
+      position: relative;
+      padding: 100px 0;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.07;
+      z-index: 0;
+    }
+
+    .hero-section .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .text-gradient {
+      background: linear-gradient(to right, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-neon {
+      color: #00ffe1;
+      text-shadow: 0 0 8px #00ffe1;
+    }
+
+    .social-icons a {
+      color: #00ffe1;
+      margin: 0 10px;
+      font-size: 1.5rem;
+      transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px #00ffe1;
+    }
+
+    /* Skills / Cards */
+    .skill-card,
+    .project-card,
+    .cert-card {
+      background: #1c1c1c;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 255, 225, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .skill-card:hover,
+    .project-card:hover,
+    .cert-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 255, 225, 0.3);
+    }
+
+    .skill-icon {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-top: 10px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #101010;
+      color: #bbb;
+      padding: 30px 0;
+    }
+
+    .footer-icons a {
+      color: #00ffe1;
+      font-size: 1.5rem;
+      margin: 0 10px;
+    }
+
+    .footer-icons a:hover {
+      text-shadow: 0 0 10px #00ffe1;
+    }
+
+    /* Offcanvas */
+    .offcanvas {
+      background-color: #121212;
+    }
+
+    .offcanvas a {
+      color: #00ffe1;
+    }
+
+    .offcanvas a:hover {
+      color: #fff;
+    }
+
+    /* Scroll Animation (AOS) */
+    [data-aos] {
+      opacity: 0;
+      transition: all 0.6s ease-in-out;
+    }
+    .skill-timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-left: 30px;
+  gap: 30px;
+  border-left: 2px solid #00ffe1;
+}
+@media screen and (max-width: 576px){
+    .skill-timeline{
+          align-items: flex-start;
+
+    }
+}
+.skill-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.skill-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  background: #1c1c1c;
+  border-radius: 50%;
+  border: 2px solid #00ffe1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  box-shadow: 0 0 15px #00ffe1;
+  flex-shrink: 0;
+}
+
+.skill-icon-glow {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px #00ffe1);
+}
+
+.skill-name {
+  color: #fff;
+  font-size: 1.2rem;
+  text-align: left;
+}
+/* General Text and Neon Effect */
+.text-neon {
+    color: #00ffe1; /* Neon cyan color */
+    text-shadow: 0 0 5px rgba(0, 255, 225, 0.7), 0 0 10px rgba(0, 255, 225, 0.7), 0 0 15px rgba(0, 255, 225, 0.7);
+}
+
+/* Form Styling for Inputs */
+.form-control-lg {
+    background-color: #1c1c1c; /* Dark background */
+    color: #fff; /* White text inside input */
+    border: 2px solid #1f1c2c; /* Dark border */
+    transition: all 0.3s ease;
+}
+
+.form-control-lg:focus {
+    background-color: #333; /* Darker background on focus */
+    border-color: #1f1c2c;
+    box-shadow: 0 0 5px rgba(0, 255, 225, 0.7);
+    color: #fff; /* Ensure the text remains white when focused */
+}
+
+/* Placeholder text visibility */
+::placeholder {
+    color: #aaa; /* Light grey placeholder text */
+    opacity: 1; /* Ensures placeholder is visible */
+}
+
+/* Submit Button Styling */
+.btn-primary {
+    background-color: #00ffe1; /* Neon cyan background */
+    border-color: #00ffe1; /* Neon cyan border */
+    color: #111; /* Dark text on button */
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #00cc99; /* Slightly darker cyan on hover */
+    border-color: #00cc99;
+}
+
+/* Social Icons Styling */
+.social-icons a {
+    color: #00ffe1;
+    margin: 0 10px;
+    font-size: 1.5rem;
+    transition: 0.3s;
+}
+
+.social-icons a:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #00ffe1;
+}
+
+/* Alert Message Styling */
+.alert {
+    background-color: #1c1c1c; /* Dark background for alerts */
+    color: #00ffe1; /* Neon cyan text */
+    border: 1px solid #00ffe1; /* Neon cyan border */
+}
+
+.alert-dismissible .btn-close {
+    color: #00ffe1; /* Close button color matches alert */
+}
+
+/* Offcanvas Menu */
+.offcanvas {
+    background-color: #121212; /* Dark background for the offcanvas menu */
+}
+
+.offcanvas a {
+    color: #00ffe1; /* Neon cyan links */
+}
+
+.offcanvas a:hover {
+    color: #fff;
+}
+
+/* Ensure the input fields blend well with the theme */
+input, textarea {
+    color: #fff; /* White text */
+    background-color: #333; /* Dark background */
+    border: 2px solid #1f1c2c; /* Matching dark border */
+}
+
+input:focus, textarea:focus {
+    border-color: #00ffe1; /* Neon border on focus */
+    box-shadow: 0 0 5px rgba(0, 255, 225, 0.7);
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">Farhan.dev</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+        <span><i class="fas fa-bars fa-lg"></i></span>
+      </button>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Menu</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'projects' %}">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+
+<!-- Footer -->
+<footer class="text-center mt-5">
+  <p>&copy; 2025 Farhan Pathan | All Rights Reserved</p>
+  
+  {% if social_links %}
+  <div class="footer-icons mt-2">
+    {% for link in social_links %}
+      <a href="{{ link.url }}" target="_blank" title="{{ link.platform }}">
+        <i class="fab fa-{{ link.platform|lower }}"></i>
+      </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</footer>
+
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    var typed = new Typed("#typed-text", {
+      strings: ["Full Stack Developer", "Creative Coder", "Tech Explorer"],
+      typeSpeed: 50,
+      backSpeed: 25,
+      loop: true
+    });
+  </script>
+</body>
+<style>
+/* Profile Image Styles */
+.profile-image-circular {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--neon-color, #00ff88);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+  transition: all 0.3s ease;
+}
+
+.profile-image-circular:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+}
+
+.profile-placeholder-circular {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.2));
+  border: 4px solid var(--neon-color, #00ff88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-image-circular,
+  .profile-placeholder-circular {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .profile-placeholder-circular i {
+    font-size: 2rem !important;
+  }
+  
+  .about-actions .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .about-actions .d-flex {
+    flex-direction: column;
+  }
+  
+  .personal-info .row {
+    text-align: center;
+  }
+  
+  .personal-info .col-sm-6 {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-image-circular,
+  .profile-placeholder-circular {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .display-4 {
+    font-size: 2rem;
+  }
+  
+  .about-content-detailed h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  
+  .personal-info .info-item {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}
+
+/* Timeline responsive improvements */
+@media (max-width: 768px) {
+  .timeline-item {
+    margin-left: 0;
+    padding-left: 30px;
+  }
+  
+  .timeline-marker {
+    left: 10px;
+  }
+  
+  .timeline-content {
+    margin-left: 0;
+  }
+}
+</style>
+</html>

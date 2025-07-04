@@ -1,31 +1,111 @@
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import *
+from django.contrib import messages
 
-# Create your views here.
-from django.shortcuts import render, get_object_or_404
-from .models import Skill, Education, Project
-from .forms import MessageForm
-
+# ----------------------------
+# Home Page
+# ----------------------------
 def home(request):
     skills = Skill.objects.all()
-    return render(request, 'portfolio/home.html', {'skills': skills})
-
-def education(request):
-    educations = Education.objects.all()
-    return render(request, 'portfolio/education.html', {'educations': educations})
-
-def projects(request):
+    about = About.objects.first()
+    social_links = SocialLink.objects.all()
     projects = Project.objects.all()
-    return render(request, 'portfolio/projects.html', {'projects': projects})
+    certifications = Certification.objects.all()
+    return render(request, 'main/home.html', {
+        'skills': skills,
+        'about': about,
+        'social_links': social_links,
+        'projects': projects,
+        'certifications': certifications,
+    })
 
+
+# ----------------------------
+# About Page
+# ----------------------------
+def about_page(request):
+    about = About.objects.first()
+    skills = Skill.objects.all()
+    social_links = SocialLink.objects.all()
+    return render(request, 'main/about.html', {
+        'about': about,
+        'social_links': social_links,
+        'skills': skills
+    })
+
+
+# ----------------------------
+# Projects Page
+# ----------------------------
+def projects_page(request):
+    projects = Project.objects.all()
+    return render(request, 'main/projects.html', {
+        'projects': projects,
+    })
+
+
+# ----------------------------
+# Single Project Page
+# ----------------------------
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    return render(request, 'portfolio/project_detail.html', {'project': project})
+    images = project.images.all()
+    return render(request, 'main/project_detail.html', {
+        'project': project,
+        'images': images,
+    })
 
-def contact(request):
+
+# ----------------------------
+# Blog Page
+# ----------------------------
+def blog_list(request):
+    blogs = BlogPost.objects.filter(is_published=True).order_by('-created_at')
+    return render(request, 'main/blog.html', {
+        'blogs': blogs,
+    })
+
+
+# ----------------------------
+# Blog Detail
+# ----------------------------
+def blog_detail(request, slug):
+    blog = get_object_or_404(BlogPost, slug=slug)
+    images = blog.images.all()
+    return render(request, 'main/blog_detail.html', {
+        'blog': blog,
+        'images': images,
+    })
+
+
+# ----------------------------
+# Certifications Page
+# ----------------------------
+def certifications_page(request):
+    certifications = Certification.objects.all().order_by('-date')
+    return render(request, 'main/certifications.html', {
+        'certifications': certifications,
+    })
+
+
+# ----------------------------
+# Contact Page + Form Submission
+# ----------------------------
+def contact_page(request):
     if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'portfolio/contact_success.html')
-    else:
-        form = MessageForm()
-    return render(request, 'portfolio/contact.html', {'form': form})
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message_text = request.POST.get('message')
+        
+        if name and email and message_text:
+            Message.objects.create(name=name, email=email, message=message_text)
+            messages.success(request, 'Message sent successfully!')
+        else:
+            messages.error(request, 'Please fill all fields.')
+
+        return redirect('contact')
+
+    social_links = SocialLink.objects.all()
+    return render(request, 'main/contact.html', {
+        'social_links': social_links
+    })
