@@ -3,21 +3,10 @@ from .models import *
 from django.contrib import messages
 
 # ----------------------------
-# Home Page
+# Home Page - Auto Redirect
 # ----------------------------
 def home(request):
-    skills = Skill.objects.all()
-    about = About.objects.first()
-    social_links = SocialLink.objects.all()
-    projects = Project.objects.all()
-    certifications = Certification.objects.all()
-    return render(request, 'main/home.html', {
-        'skills': skills,
-        'about': about,
-        'social_links': social_links,
-        'projects': projects,
-        'certifications': certifications,
-    })
+    return redirect('https://portfolio-website-vnav.onrender.com')
 
 
 # ----------------------------
